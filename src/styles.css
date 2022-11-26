@@ -31,3 +31,13 @@ body {
     cursor: pointer;
   }
   
+  .common-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+  }
+
+  .message-p{
+color: green;
+  }
