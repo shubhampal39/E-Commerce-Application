@@ -9,15 +9,34 @@ import { SellerService } from '../services/seller.service';
   styleUrls: ['./seller-auth.component.css'],
 })
 export class SellerAuthComponent implements OnInit {
-  constructor(private seller: SellerService, private router: Router) { }
+  showLogin: boolean = false;
+  authError: string = '';
+  constructor(private sellerService: SellerService, private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.sellerService.reLoadSeller();
+  }
 
   signUp(data: signUp): void {
+    this.sellerService.userSignUp(data);
+  }
+
+  openLogin() {
+    this.showLogin = true;
+  }
+
+  openSignUp() {
+    this.showLogin = false;
+  }
+  login(data: signUp) {
     console.log(data);
-    this.seller.userSignUp(data).subscribe((result) => {
-      console.log(result);
-      this.router.navigate(['seller-home']);
+    this.authError = '';
+    this.sellerService.userLogin(data);
+    this.sellerService.isLoginError.subscribe((iserror) => {
+      console.log(iserror)
+      if (iserror) {
+        this.authError = "Email or Paaword is not Correct";
+      }
     })
   }
 }
