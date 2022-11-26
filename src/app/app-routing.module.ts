@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SellerAuthComponent } from './seller-auth/seller-auth.component';
+import { SellerHomeComponent } from './seller-home/seller-home.component';
 
 const routes: Routes = [
   {
@@ -12,13 +13,17 @@ const routes: Routes = [
     path: 'seller-auth',
     component: SellerAuthComponent,
   },
+  {
+    path: 'seller-home',
+    component: SellerHomeComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
 
 //for adding app-routing module
 // 1) add file name app-routing-module in app.module.ts (imports)
