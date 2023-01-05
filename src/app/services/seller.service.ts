@@ -1,50 +1,45 @@
-import { HttpClient } from '@angular/common/http';
-import { login, signUp } from 'src/model/data.type';
+import { EventEmitter, Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http'
+import { login, signUp } from '../data-type';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { EventEmitter, Injectable } from '@angular/core';
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class SellerService {
-  isSellarLoggedIn = new BehaviorSubject<boolean>(false);
-  isLoginError = new EventEmitter<boolean>(false);
-  constructor(private http: HttpClient, private router: Router) { }
+  isSellerLoggedIn= new BehaviorSubject<boolean>(false);
+  isLoginError= new EventEmitter<boolean>(false)
 
-  userSignUp(data: signUp) {
-    this.http.post('http://localhost:3000/seller', data, { observe: 'response' }).subscribe((result) => {
-      this.isSellarLoggedIn.next(true);
-      localStorage.setItem('seller', JSON.stringify(result.body));
-      this.router.navigate(['seller-home'])
-      console.log(result)
+  constructor(private http:HttpClient, private router:Router) { }
+  userSignUp(data:signUp){
+    this.http.post('http://localhost:3000/seller',
+    data,
+    {observe:'response'}).subscribe((result)=>{
+      console.warn(result)
+      if(result){
+        localStorage.setItem('seller',JSON.stringify(result.body))
+        this.router.navigate(['seller-home'])
+      }
     })
-  }
-
-  reLoadSeller() {
-    if (localStorage.getItem('seller')) {
-      this.isSellarLoggedIn.next(true);
+  } 
+  reloadSeller(){
+    if(localStorage.getItem('seller')){
+      this.isSellerLoggedIn.next(true)
       this.router.navigate(['seller-home'])
     }
-
   }
-
-  userLogin(data: login) {
-    console.log(data);
-    this.http.get(`http://localhost:3000/seller?email=${data.email}&password=${data.password}`,
-      { observe: 'response' }).subscribe((result: any) => {
-        console.log(result);
-        if (result && result.body && result.body.length) {
-          console.warn("login")
-          localStorage.setItem('seller', JSON.stringify(result.body));
-          this.router.navigate(['seller-home'])
-        }
-        else {
-          console.warn("logn failed")
-          this.isLoginError.emit(true);
-        }
-
-      })
+  userLogin(data:login){
+   this.http.get(`http://localhost:3000/seller?email=${data.email}&password=${data.password}`,
+   {observe:'response'}).subscribe((result:any)=>{
+    console.warn(result)
+    if(result && result.body && result.body.length===1){
+      this.isLoginError.emit(false)
+      localStorage.setItem('seller',JSON.stringify(result.body))
+      this.router.navigate(['seller-home'])
+    }else{
+      console.warn("login failed");
+      this.isLoginError.emit(true)
+    }
+   })
   }
 }

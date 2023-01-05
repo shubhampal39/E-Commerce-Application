@@ -1,25 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { product } from 'src/model/data.type';
+import { product } from '../data-type';
 import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-seller-add-product',
   templateUrl: './seller-add-product.component.html',
-  styleUrls: ['./seller-add-product.component.css']
+  styleUrls: ['./seller-add-product.component.css'],
 })
 export class SellerAddProductComponent implements OnInit {
   addProductMessage: string | undefined;
-  constructor(private productService: ProductService) { }
+  constructor(private product: ProductService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   submit(data: product) {
-    this.productService.addProduct(data).subscribe((result) => {
+    this.product.addProduct(data).subscribe((result) => {
+      console.warn(result);
       if (result) {
-        this.addProductMessage = "Product is successsfully added"
+        this.addProductMessage = 'Product is added successfully';
       }
-      setTimeout(() => this.addProductMessage = undefined, 3000);
-    })
+    });
+
+    setTimeout(() => {
+      this.addProductMessage=undefined
+    }, 3000);
   }
 }

@@ -1,5 +1,4 @@
-import { Component, VERSION } from '@angular/core';
-import { SellerService } from './services/seller.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
@@ -7,7 +6,5 @@ import { SellerService } from './services/seller.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private sellerService: SellerService) { }
-
-
+  title = 'ecomm-project';
 }
